@@ -1,12 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 package Portafolio.Portafolio.domain;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import lombok.Data;
 
 @Data
@@ -24,6 +20,10 @@ public class Categoria implements Serializable {
     private String rutaImagen;
     private boolean activo;
 
+    @OneToMany
+    @JoinColumn(name = "id_categoria", updatable = false)
+    List<Producto> productos;
+    
     public Categoria() {
     }
 
