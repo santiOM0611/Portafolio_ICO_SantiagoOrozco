@@ -1,5 +1,10 @@
 package Portafolio.Portafolio.service.impl;
 
+/*
+Comentario: En el paquete ServiceImpl se implementan las interfaces que serán implementadas en la capa de servicio. 
+Esta clase implementa la interface CategoriaService. 
+*/
+
 import Portafolio.Portafolio.dao.ProductoDao;
 import Portafolio.Portafolio.domain.Producto;
 import Portafolio.Portafolio.service.ProductoService;

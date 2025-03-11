@@ -1,5 +1,11 @@
 package Portafolio.Portafolio.service;
 
+/*
+Comentario:  En el paquete Service se crearán todos las interfaces de servicio. 
+La interface recibe un parámetro boolean para devolver o la lista 
+completa o sólo la lista de Productos activos. 
+*/
+
 import Portafolio.Portafolio.domain.Producto;
 import java.util.List;
 

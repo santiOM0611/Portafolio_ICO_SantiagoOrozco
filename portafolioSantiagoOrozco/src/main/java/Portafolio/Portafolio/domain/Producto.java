@@ -1,5 +1,10 @@
 package Portafolio.Portafolio.domain;
 
+/*
+Comentario: En el paquete domain se crearán todas las entidades del proyecto que mapean las tablas de la base de datos.
+Esta clase tiene multiples anotaciones importantes que implementan la interfaz Serializable. 
+*/
+
 import jakarta.persistence.*;
 import java.io.Serializable;
 import lombok.Data;

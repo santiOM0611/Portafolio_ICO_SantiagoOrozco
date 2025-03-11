@@ -1,5 +1,11 @@
 package Portafolio.Portafolio.controller;
 
+/*
+Comentario: En el paquete Controller se crearán todos las controladores que ejecutan las rutas en las diferentes vistas. 
+Esta clase incorpora una @Autowired, para un objeto productoService que se 
+utiliza para obtener la información de la tabla producto. 
+*/
+
 import Portafolio.Portafolio.domain.Producto;
 import Portafolio.Portafolio.service.CategoriaService;
 import Portafolio.Portafolio.service.ProductoService;
