@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+Fragementos: <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
     <body>
@@ -21,7 +21,7 @@
             </div>
         </section>
 
-         <!-- 2 Sección principal para mostrar la informaccion de la entidad producto -->
+         <!-- 2 Sección principal para mostrar la informacion de la entidad producto -->
         <section th:fragment="listadoProductos" id="productos">
             <div class="row row-cols-4">
                 <div class="card" th:each="p : ${productos}">
@@ -124,6 +124,33 @@
                     </form>
                 </div>
             </div>
-        </section> 
+            <!-- Nuevo formulario para búsqueda por descripción de la Práctica #4  -->
+            <div class="row py-2">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <form method="POST" th:action="@{/pruebas/query4}" 
+                          class="was-validated">
+                        <div class="card">
+                            <div class="card-header bg-success text-white">
+                                <h5>Búsqueda por descripción</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label for="descripcion">Descripción:</label>
+                                    <input type="text" class="form-control" 
+                                           th:value="${descripcion}"
+                                           th:name="descripcion" required="true"/>
+                                </div>
+                            </div>
+                            <div class="card-footer text-center">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-search"></i> Buscar por descripción
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>    
     </body>
 </html>
