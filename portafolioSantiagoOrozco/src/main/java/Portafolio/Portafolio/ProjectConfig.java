@@ -5,6 +5,10 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,9 +24,8 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 @Configuration
 public class ProjectConfig implements WebMvcConfigurer {
-    /* Los siguientes métodos son para incorporar el tema de internacionalización en el proyecto */
     
-    /* localeResolver se utiliza para crear una sesión de cambio de idioma*/
+    /* Los siguientes métodos son para incorporar el tema de internacionalización en el proyecto */
     @Bean
     public LocaleResolver localeResolver() {
         var slr = new SessionLocaleResolver();
@@ -32,7 +35,6 @@ public class ProjectConfig implements WebMvcConfigurer {
         return slr;
     }
 
-    /* localeChangeInterceptor se utiliza para crear un interceptor de cambio de idioma*/
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
         var lci = new LocaleChangeInterceptor();
@@ -45,16 +47,14 @@ public class ProjectConfig implements WebMvcConfigurer {
         registro.addInterceptor(localeChangeInterceptor());
     }
 
-    //Bean para poder acceder a los Messages.properties en código...
     @Bean("messageSource")
     public MessageSource messageSource() {
-        ResourceBundleMessageSource messageSource= new ResourceBundleMessageSource();
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.setBasenames("messages");
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
     }
     
-    /* Los siguiente métodos son para implementar el tema de seguridad dentro del proyecto */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("index");
@@ -94,25 +94,35 @@ public class ProjectConfig implements WebMvcConfigurer {
         return http.build();
     }
 
-/* El siguiente método se utiliza para completar la clase no es 
-    realmente funcional, la próxima semana se reemplaza con usuarios de BD */    
+    /*Configuración de autenticación 
     @Bean
-    public UserDetailsService users() {
+    public UserDetailsService userDetailsService() {
         UserDetails admin = User.builder()
                 .username("juan")
-                .password("{noop}123")
+                .password(passwordEncoder().encode("123"))
                 .roles("USER", "VENDEDOR", "ADMIN")
                 .build();
         UserDetails sales = User.builder()
                 .username("rebeca")
-                .password("{noop}456")
+                .password(passwordEncoder().encode("456"))
                 .roles("USER", "VENDEDOR")
                 .build();
         UserDetails user = User.builder()
                 .username("pedro")
-                .password("{noop}789")
+                .password(passwordEncoder().encode("789"))
                 .roles("USER")
                 .build();
         return new InMemoryUserDetailsManager(user, sales, admin);
+    } */
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
+    }
+    
 }
