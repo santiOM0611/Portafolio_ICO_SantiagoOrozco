@@ -1,11 +1,11 @@
 package Portafolio.Portafolio.service.impl;
 
-import Portafolio.Portafolio.dao.UsuarioDao;
-import Portafolio.Portafolio.domain.Rol;
-import Portafolio.Portafolio.domain.Usuario;
 import Portafolio.Portafolio.service.UsuarioDetailsService;
+import Portafolio.Portafolio.dao.UsuarioDao;
+import Portafolio.Portafolio.domain.Usuario;
+import Portafolio.Portafolio.domain.Rol;
 import jakarta.servlet.http.HttpSession;
-import java.util.ArrayList; 
+import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,35 +15,28 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service("userDetailsService")
 public class UsuarioDetailsServiceImpl implements UsuarioDetailsService, UserDetailsService {
-
     @Autowired
     private UsuarioDao usuarioDao;
-
     @Autowired
     private HttpSession session;
-
+    
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // Find user by username
+        //Busca el usuario en la tabla
         Usuario usuario = usuarioDao.findByUsername(username);
-        // Throw exception if user not found
+        //Si no existe el usuario lanza una excepción
         if (usuario == null) {
             throw new UsernameNotFoundException(username);
         }
-        session.removeAttribute("usuarioImagen"); 
+        session.removeAttribute("usuarioImagen");
         session.setAttribute("usuarioImagen", usuario.getRutaImagen());
-        
-        var roles = new ArrayList<GrantedAuthority>(); 
-        for (Rol rol : usuario.getRoles()) {
-            roles.add(new SimpleGrantedAuthority(rol.getNombre()));
+        //Si está acá es porque existe el usuario... sacamos los roles que tiene
+        var roles = new ArrayList<GrantedAuthority>();
+        for (Rol rol : usuario.getRoles()) {    
+        roles.add(new SimpleGrantedAuthority("ROLE_" + rol.getNombre()));
         }
-
-        // Return UserDetails object
-        return new User(
-            usuario.getUsername(), 
-            usuario.getPassword(), 
-            roles
-        );
+        //Se devuelve User (clase de UserDetails)
+        return new User(username, usuario.getPassword(), roles);
     }
 }
